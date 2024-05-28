@@ -131,14 +131,12 @@ function addLetter(letter) {
 function removeLetter() {
     if(state.currentCol === 0) return;
     state.grid[state.currentRow][state.currentCol - 1] = '';
-    state.currentCol--;
-    
+    state.currentCol--;  
 }
 
 function startup() {
     const game = document.getElementById('game');
     drawGrid(game);
-
     registerKeyboardEvents();
 }
 
