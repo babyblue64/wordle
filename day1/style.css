@@ -1,12 +1,12 @@
-html, body {
-    background: var(--default);
+:root {
+    --default: black;
+    --rightPlace: green;
+    --wrongPlace: yellow;
+    --noMatch: grey;
 }
 
-:root {
-    --default: #121213;
-    --empty: #3a3a3c;
-    --wrong: #b59f3b;
-    --right: #538d4e;
+html, body {
+    background-color: var(--default);
 }
 
 #game {
@@ -27,22 +27,22 @@ html, body {
     place-items: center;
     width: 60px;
     height: 60px;
-    border: 2px solid var(--empty);
+    border: 2px solid var(--noMatch);
     margin: 4px;
     color: white;
-    text-transform: uppercase;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 2.4rem;
+    text-transform: uppercase;
 }
 
-.box.empty {
-    background: var(--empty);
+.box.rightPlace {
+    background-color: var(--rightPlace);
 }
 
-.box.wrong {
-    background: var(--wrong);
+.box.wrongPlace {
+    background-color: var(--wrongPlace);
 }
 
-.box.right {
-    background: var(--right);
+.box.noMatch {
+    background-color: var(--noMatch);
 }

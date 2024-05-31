@@ -1,143 +1,145 @@
-const dictionary = ['audio', 'apple', 'plane', 'peach', 'brown', 'black', 'earth', 'crane', 'drink', 'block']
-const state = { 
-    secret: dictionary[Math.floor(Math.random() * dictionary.length)],
-    grid: Array(6)
-        .fill()
-        .map(() => Array(5).fill('')),
-    currentRow: 0,
-    currentCol: 0,
-}
-
-function updateGrid() {
-    for(let i = 0 ; i < state.grid.length; i++) {
-        for(let j = 0 ; j < state.grid[i].length; j++) {
-            const box = document.getElementById(`box${i}${j}`);
-            box.textContent = state.grid[i][j];
-        }
-    }
-}
-
-function drawBox(container, row, col, letter = '') { 
+//UI
+function makeBox(container, row, col) {
     const box = document.createElement('div');
     box.className = 'box';
     box.id = `box${row}${col}`;
-    box.textContent = letter;
+    box.textContent = '';
 
     container.appendChild(box);
-    return box;
 }
 
-function drawGrid(container) { 
+function makeGrid(container) {
     const grid = document.createElement('div');
-    grid.className = 'grid'
+    grid.className = 'grid';
 
     for(let i = 0 ; i < 6 ; i++) {
         for(let j = 0 ; j < 5 ; j++) {
-            drawBox(grid, i, j);
+            makeBox(grid, i, j);
         }
     }
 
     container.appendChild(grid);
 }
 
-function registerKeyboardEvents() {
-    document.body.onkeydown = (e) => {
-        const key = e.key;
-        if(key === 'Enter') {
-            if(state.currentCol === 5) {
-                const word = getCurrentWord();
-                if (isWordValid(word)) {
-                    revealWord(word);
-                    state.currentRow++;
-                    state.currentCol = 0;
-                }
-                else {
-                    alert('Invalid word');
-                }
-            }
-        }
-        if(key === 'Backspace') {
-            removeLetter();
-        }
+//data
+const Dictionary = ['apple', 'peach', 'crane', 'brown', 'fresh', 'juice', 'sugar', 'dairy', 'diary', 
+                    'light', 'truth', 'range', 'plane', 'sheet', 'greet', 'anger', 'index','teeth', 'beach'];
+const State = {
+    secret: Dictionary[Math.floor(Math.random()*Dictionary.length)],
+    hint: Array(5).fill(''),
+    grid: Array(6).fill().map(() => Array(5).fill('')),
+    row: 0,
+    col: 0,
+}
+
+//backend
+function syncUI() {
+    for(let i = 0 ; i < State.grid[State.row].length ; i++) {
+        const box = document.getElementById(`box${State.row}${i}`);
+        box.textContent = State.grid[State.row][i];
+    }
+}
+
+function syncUIwhenEnter() {
+    for(let i = 0 ; i < 5 ; i++) {
+        const box = document.getElementById(`box${State.row}${i}`);
+        box.classList.add(State.hint[i]);
+    }
+}
+
+function listenForKeyPress() {
+    document.body.onkeydown = (input) => {
+        const key = input.key;
+
         if(isLetter(key)) {
             addLetter(key);
         }
-
-        updateGrid();
-
+        if(key === 'Backspace') {
+            clearLetter();
+        }
+        if(key === 'Enter' && State.col === 5) {
+            const word = getCurrentWord();
+            if(isWordValid(word)) {
+                revealWord(word);
+                syncUIwhenEnter();
+                State.row++;
+                State.col = 0;
+            }
+            else{
+                alert("Invalid word");
+            }
+        } 
+        else {
+            syncUI();
+        }
     }
+}
+
+function isLetter(letter) {
+    return letter.length === 1 && letter.match(/[a-z]/i);
+}
+
+function addLetter(letter) {
+    if(State.col === 5) return;
+    State.grid[State.row][State.col] = letter;
+    State.col++;
+}
+
+function clearLetter() {
+    if(State.col === 0) return;
+    State.grid[State.row][State.col - 1] = ''; 
+    State.col--;
 }
 
 function getCurrentWord() {
-    return state.grid[state.currentRow].reduce((prev, curr) => prev + curr);
+    return State.grid[State.row].reduce((prev, curr) => prev + curr);
 }
 
-function isWordValid(word) {
-    return dictionary.includes(word);
+function isWordValid(guess) {
+    return Dictionary.includes(guess);
 }
 
 function revealWord(guess) {
-    const row = state.currentRow;
-    
     for(let i = 0 ; i < 5 ; i++) {
-        const box = document.getElementById(`box${row}${i}`);
-        const letter = box.textContent;
-
-        if(letter === state.secret[i]) {
-            box.classList.add('right');
+        const letter = State.grid[State.row][i];
+        if(letter === State.secret[i]) {
+            State.hint[i] = "rightPlace";
         }
-        else if(state.secret.includes(letter)) {
-            box.classList.add('wrong');
+        else if(State.secret.includes(letter)) {
+            State.hint[i] = "wrongPlace";
         }
         else {
-            box.classList.add('empty');
+            State.hint[i] = "noMatch";
         }
     }
 
-    const isWinner = state.secret === guess;
-    const isGameOver = state.currentRow === 5;
+    const isWinner = State.secret === guess;
+    const isGameOver = State.row === 5;
 
     if(isWinner) {
-        setTimeout(
+        setTimeout (
             () => {
                 alert('Congrats!');
                 location.reload();
             }, 
-            2000
+            2000,
         )
     }
     if(isGameOver) {
-        setTimeout(
+        setTimeout (
             () => {
-                alert(`Game over. The word was ${state.secret}`);
+                alert(`Game over! The word was ${State.secret}`);
                 location.reload();
-            }, 
-            2000
+            },
+            2000,
         )
     }
-    
-}
-
-function isLetter(key) {
-    return key.length === 1 && key.match(/[a-z]/i);
-}
-
-function addLetter(letter) {
-    if(state.currentCol === 5) return;
-    state.grid[state.currentRow][state.currentCol] = letter;
-    state.currentCol++;
-}
-
-function removeLetter() {
-    if(state.currentCol === 0) return;
-    state.grid[state.currentRow][state.currentCol - 1] = '';
-    state.currentCol--;  
 }
 
 function startup() {
     const game = document.getElementById('game');
-    drawGrid(game);
-    registerKeyboardEvents();
+    makeGrid(game);
+    listenForKeyPress();
 }
 
 startup();
