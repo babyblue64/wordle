@@ -25,7 +25,7 @@ function makeGrid(container) {
 //data
 const Dictionary = dictionary;
     //['apple', 'peach', 'crane', 'brown', 'fresh', 'juice', 'sugar', 'dairy', 'diary', 
-                    'light', 'truth', 'range', 'plane', 'sheet', 'greet', 'anger', 'index','teeth', 'beach'];
+                    //'light', 'truth', 'range', 'plane', 'sheet', 'greet', 'anger', 'index','teeth', 'beach'];
 const State = {
     secret: Dictionary[Math.floor(Math.random()*Dictionary.length)],
     hint: Array(5).fill(''),
