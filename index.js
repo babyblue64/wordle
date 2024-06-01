@@ -1,4 +1,4 @@
-import dictionary from 'dictionary.js';
+import {dictionary} from 'dictionary.js';
 //UI
 function makeBox(container, row, col) {
     const box = document.createElement('div');
