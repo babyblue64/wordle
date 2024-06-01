@@ -1,3 +1,4 @@
+import dictionary from 'dictionary.js';
 //UI
 function makeBox(container, row, col) {
     const box = document.createElement('div');
@@ -22,7 +23,8 @@ function makeGrid(container) {
 }
 
 //data
-const Dictionary = ['apple', 'peach', 'crane', 'brown', 'fresh', 'juice', 'sugar', 'dairy', 'diary', 
+const Dictionary = dictionary;
+    //['apple', 'peach', 'crane', 'brown', 'fresh', 'juice', 'sugar', 'dairy', 'diary', 
                     'light', 'truth', 'range', 'plane', 'sheet', 'greet', 'anger', 'index','teeth', 'beach'];
 const State = {
     secret: Dictionary[Math.floor(Math.random()*Dictionary.length)],
