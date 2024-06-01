@@ -1,4 +1,5 @@
 export const fullDictionary = [
+  "ricin",
   "which",
   "there",
   "their",
