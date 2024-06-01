@@ -1,4 +1,4 @@
-import fullDictionary from 'dictionary.js';
+import fullDictionary from "dictionary.js";
 //UI
 function makeBox(container, row, col) {
     const box = document.createElement('div');
@@ -23,7 +23,7 @@ function makeGrid(container) {
 }
 
 //data
-const Dictionary = dictionary;
+const Dictionary = fullDictionary;
     //['apple', 'peach', 'crane', 'brown', 'fresh', 'juice', 'sugar', 'dairy', 'diary', 
                     //'light', 'truth', 'range', 'plane', 'sheet', 'greet', 'anger', 'index','teeth', 'beach'];
 const State = {
