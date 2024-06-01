@@ -1,4 +1,4 @@
-import { fullDictionary } from "./dictionary.js";
+import { fullDictionary } from "dictionary.js";
 //UI
 function makeBox(container, row, col) {
     const box = document.createElement('div');
