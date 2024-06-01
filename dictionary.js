@@ -1,4 +1,4 @@
-export const realDictionary = [
+export const dictionary = [
   "which",
   "there",
   "their",
