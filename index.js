@@ -127,7 +127,7 @@ function revealWord(guess) {
             2000,
         )
     }
-    if(isGameOver) {
+    else if(isGameOver) {
         setTimeout (
             () => {
                 alert(`Game over! The word was ${State.secret}`);
